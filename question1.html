@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QUESTION 1</title>
+    <link rel="stylesheet" href="./style.css">
+
+</head>
+<body>
+    <div id="questionContainer">
+        <h1>QUESTION 1</h1>
+
+        <p>Press the button to hear the question</p>
+        <button id="questionBtn">Question</button>
+
+        <p id="output"></p>
+
+        
+        <p>Press this button to say your answer</p>
+        <button>I know the answer</button>
+
+        <br>
+
+        <button><a href="question2.html">next question</a></button>
+    </div>
+
+    <script>
+
+        // TEXT TO SPEECH QUESTION
+        const synth = window.speechSynthesis;
+        let utterance = new SpeechSynthesisUtterance("What is two plus two?");
+        utterance.lang = "en-US";
+        utterance.pitch = 1.2;
+        utterance.rate = 0.9;
+
+        function matchVoiceToLang(voice) {
+        if (voice.lang == utterance.lang) {
+            return true;
+        }
+        return false;
+        }
+
+        synth.onvoiceschanged = () => {
+        let voices = synth.getVoices().filter(matchVoiceToLang);
+        console.log(voices);
+        utterance.voice = voices[0];
+        }
+
+        document.querySelector("#questionBtn").addEventListener("click", () => synth.speak(utterance));
+        
+        // SPEECH TO TEXT ANSWER
+
+
+    </script>
+</body>
+</html>
