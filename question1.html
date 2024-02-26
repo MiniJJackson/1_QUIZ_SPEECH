@@ -18,11 +18,14 @@
 
         
         <p>Press this button to say your answer</p>
-        <button>I know the answer</button>
+        <button class="answer" id="answerBtn">I know the answer</button>
 
-        <br>
+        <div>
+            <p class="result">Right or wrong?</p>
+            <p class="output">...diagnostic messages</p>
+        </div>
 
-        <button><a href="question2.html">next question</a></button>
+        <button id="nextQ">next question</a></button>
     </div>
 
     <script>
@@ -43,7 +46,7 @@
 
         synth.onvoiceschanged = () => {
         let voices = synth.getVoices().filter(matchVoiceToLang);
-        console.log(voices);
+        //console.log(voices);
         utterance.voice = voices[0];
         }
 
@@ -51,6 +54,52 @@
         
         // SPEECH TO TEXT ANSWER
 
+        var SpeechRecognition = SpeechRecognition || webkitSpeechRecognition;
+        var SpeechGrammarList = SpeechGrammarList || webkitSpeechGrammarList;
+        var SpeechRecognitionEvent = SpeechRecognitionEvent || webkitSpeechRecognitionEvent;
+
+        var answerQuestion1 = "four";
+              
+        var resultPara = document.querySelector('.result');
+        var diagnosticPara = document.querySelector('.output');
+
+        // the button to start the speech recognition
+        var testBtn = document.querySelector('#answerBtn');
+        var nextQ = document.querySelector('#nextQ');
+
+        function testSpeech() {
+            testBtn.textContent = 'Test in progress';
+
+            var recognition = new SpeechRecognition();
+            var speechRecognitionList = new SpeechGrammarList();
+            recognition.grammars = speechRecognitionList;
+            recognition.continuous = false;
+            recognition.lang = 'en-US';
+            recognition.interimResults = false;
+            recognition.maxAlternatives = 1;
+
+            recognition.start();
+
+            recognition.onresult = function(event) {
+                var speechResult = event.results[0][0].transcript;
+                diagnosticPara.textContent = 'Speech received: ' + speechResult + '.';
+                if(speechResult === answerQuestion1) {
+                    resultPara.textContent = 'I heard the correct phrase!';
+                    resultPara.style.background = 'lime';
+                    nextQ.style.backgroundColor = 'lightgreen';
+                    nextQ.a.href = "question2.html";
+
+                } else {
+                    resultPara.textContent = 'That didn\'t sound right.';
+                    resultPara.style.background = 'red';
+                }
+
+                console.log('Confidence: ' + event.results[0][0].confidence);
+            }
+        }
+
+        // function aanroepen
+        testBtn.addEventListener('click', testSpeech);
 
     </script>
 </body>

@@ -25,7 +25,8 @@ h1{
 p{
     margin-top: 20px;
     font-size: 1.2rem;
-    color: #333;
+    font-weight: 600;
+    color: #000000;
 }
 
 button{
@@ -36,8 +37,11 @@ button{
     color: #fff;
     border: none;
     border-radius: 5px;
-    cursor: pointer;
-    
+    cursor: pointer;   
+}
+
+#nextQ{
+    background-color: lightgray;
 }
 a{
     text-decoration: none;
