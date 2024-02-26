@@ -15,19 +15,24 @@
         <p>Press the button to hear the question</p>
         <button id="questionBtn">Question</button>
 
+        <p id="output"></p>
+
         <p>Press this button to say your answer</p>
-        <button>I know the answer</button>
+        <button class="answer" id="answerBtn">I know the answer</button>
 
-        <br>
+        <div>
+            <p class="result">Right or wrong?</p>
+            <p class="output">...diagnostic messages</p>
+        </div>
 
-        <button><a href="">Results</a></button>
+        <button id="result">Results</button>
     </div>
 
     <script>
 
         // TEXT TO SPEECH QUESTION
         const synth = window.speechSynthesis;
-        let utterance = new SpeechSynthesisUtterance("How big is the Cathedral?");
+        let utterance = new SpeechSynthesisUtterance("  What color is the sky?");
         utterance.lang = "en-US";
         utterance.pitch = 1.2;
         utterance.rate = 0.9;
@@ -48,6 +53,53 @@
         document.querySelector("#questionBtn").addEventListener("click", () => synth.speak(utterance));
         
         // SPEECH TO TEXT ANSWER
+
+        var SpeechRecognition = SpeechRecognition || webkitSpeechRecognition;
+        var SpeechGrammarList = SpeechGrammarList || webkitSpeechGrammarList;
+        var SpeechRecognitionEvent = SpeechRecognitionEvent || webkitSpeechRecognitionEvent;
+
+        var answerQuestion3 = "blue";
+              
+        var resultPara = document.querySelector('.result');
+        var diagnosticPara = document.querySelector('.output');
+
+        // the button to start the speech recognition
+        var testBtn = document.querySelector('#answerBtn');
+        var result = document.querySelector('#result');
+
+        function testSpeech() {
+            testBtn.textContent = 'Test in progress';
+
+            var recognition = new SpeechRecognition();
+            var speechRecognitionList = new SpeechGrammarList();
+            recognition.grammars = speechRecognitionList;
+            recognition.continuous = false;
+            recognition.lang = 'en-US';
+            recognition.interimResults = false;
+            recognition.maxAlternatives = 1;
+
+            recognition.start();
+
+            recognition.onresult = function(event) {
+                var speechResult = event.results[0][0].transcript;
+                diagnosticPara.textContent = 'Speech received: ' + speechResult + '.';
+                if(speechResult === answerQuestion3) {
+                    resultPara.textContent = 'I heard the correct phrase!';
+                    resultPara.style.background = 'lime';
+                    result.style.backgroundColor = 'pink';
+                    result.innerHTML = 'YOU NAILED IT';
+
+                } else {
+                    resultPara.textContent = 'That didn\'t sound right.';
+                    resultPara.style.background = 'red';
+                }
+
+                console.log('Confidence: ' + event.results[0][0].confidence);
+            }
+        }
+
+        // function aanroepen
+        testBtn.addEventListener('click', testSpeech);
 
 
     </script>

@@ -32,7 +32,7 @@
 
         // TEXT TO SPEECH QUESTION
         const synth = window.speechSynthesis;
-        let utterance = new SpeechSynthesisUtterance("What is two plus two?");
+        let utterance = new SpeechSynthesisUtterance("  What is two plus two?");
         utterance.lang = "en-US";
         utterance.pitch = 1.2;
         utterance.rate = 0.9;
@@ -87,7 +87,7 @@
                     resultPara.textContent = 'I heard the correct phrase!';
                     resultPara.style.background = 'lime';
                     nextQ.style.backgroundColor = 'lightgreen';
-                    nextQ.a.href = "question2.html";
+                    nextQ.innerHTML = '<a href="question2.html">next question</a>';
 
                 } else {
                     resultPara.textContent = 'That didn\'t sound right.';
